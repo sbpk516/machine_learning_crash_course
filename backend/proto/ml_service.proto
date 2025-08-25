@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package mlservice;
+
+option go_package = "ml-crash-course-backend/proto";
+
+import "google/protobuf/timestamp.proto";
+
+// Course service
+service CourseService {
+  rpc GetCourse(GetCourseRequest) returns (CourseResponse);
+  rpc GetCourses(GetCoursesRequest) returns (CoursesResponse);
+  rpc GetModules(GetModulesRequest) returns (ModulesResponse);
+  rpc GetModule(GetModuleRequest) returns (ModuleResponse);
+}
+
+// User service
+service UserService {
+  rpc GetUser(GetUserRequest) returns (UserResponse);
+  rpc CreateUser(CreateUserRequest) returns (UserResponse);
+  rpc UpdateProgress(UpdateProgressRequest) returns (ProgressResponse);
+  rpc GetProgress(GetProgressRequest) returns (ProgressResponse);
+}
+
+// Analytics service
+service AnalyticsService {
+  rpc TrackEvent(TrackEventRequest) returns (TrackEventResponse);
+  rpc GetAnalytics(GetAnalyticsRequest) returns (AnalyticsResponse);
+}
+
+// Course messages
+message Course {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  int32 duration = 4;
+  string level = 5;
+  double rating = 6;
+  repeated string features = 7;
+  string badge = 8;
+  string category = 9;
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+}
+
+message Module {
+  string id = 1;
+  int32 number = 2;
+  string title = 3;
+  string description = 4;
+  int32 duration = 5;
+  int32 exercises = 6;
+  int32 videos = 7;
+  string course_id = 8;
+  bool is_completed = 9;
+  int32 progress = 10;
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Timestamp updated_at = 12;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  repeated string completed_courses = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message CourseProgress {
+  string id = 1;
+  string user_id = 2;
+  string course_id = 3;
+  repeated string completed_modules = 4;
+  int32 overall_progress = 5;
+  google.protobuf.Timestamp last_accessed = 6;
+}
+
+// Request/Response messages
+message GetCourseRequest {
+  string id = 1;
+}
+
+message CourseResponse {
+  Course course = 1;
+  string error = 2;
+}
+
+message GetCoursesRequest {
+  string category = 1;
+}
+
+message CoursesResponse {
+  repeated Course courses = 1;
+  string error = 2;
+}
+
+message GetModulesRequest {
+  string course_id = 1;
+}
+
+message ModulesResponse {
+  repeated Module modules = 1;
+  string error = 2;
+}
+
+message GetModuleRequest {
+  string id = 1;
+}
+
+message ModuleResponse {
+  Module module = 1;
+  string error = 2;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message UserResponse {
+  User user = 1;
+  string error = 2;
+}
+
+message CreateUserRequest {
+  string email = 1;
+  string name = 2;
+}
+
+message UpdateProgressRequest {
+  string user_id = 1;
+  string course_id = 2;
+  repeated string completed_modules = 3;
+  int32 overall_progress = 4;
+}
+
+message ProgressResponse {
+  CourseProgress progress = 1;
+  string error = 2;
+}
+
+message GetProgressRequest {
+  string user_id = 1;
+}
+
+message TrackEventRequest {
+  string event = 1;
+  map<string, string> properties = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message TrackEventResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message GetAnalyticsRequest {
+  string user_id = 1;
+  google.protobuf.Timestamp start_date = 2;
+  google.protobuf.Timestamp end_date = 3;
+}
+
+message AnalyticsResponse {
+  map<string, int32> metrics = 1;
+  string error = 2;
+}

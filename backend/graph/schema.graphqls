@@ -1,0 +1,95 @@
+scalar Time
+
+type Course {
+  id: ID!
+  title: String!
+  description: String!
+  duration: Int!
+  level: String!
+  rating: Float!
+  modules: [Module!]!
+  features: [String!]!
+  badge: String
+  category: String!
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+type Module {
+  id: ID!
+  number: Int!
+  title: String!
+  description: String!
+  duration: Int!
+  exercises: Int!
+  videos: Int!
+  courseId: ID!
+  course: Course!
+  isCompleted: Boolean
+  progress: Int
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+type Prerequisite {
+  id: ID!
+  title: String!
+  description: String!
+  items: [String!]!
+  difficulty: String!
+  icon: String!
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+  progress: [CourseProgress!]!
+  completedCourses: [String!]!
+  createdAt: Time!
+  updatedAt: Time!
+}
+
+type CourseProgress {
+  id: ID!
+  userId: ID!
+  courseId: ID!
+  completedModules: [String!]!
+  overallProgress: Int!
+  lastAccessed: Time!
+  user: User!
+  course: Course!
+}
+
+type Query {
+  courses(category: String): [Course!]!
+  course(id: ID!): Course
+  modules(courseId: ID!): [Module!]!
+  module(id: ID!): Module
+  prerequisites: [Prerequisite!]!
+  user(id: ID!): User
+  userProgress(userId: ID!): [CourseProgress!]!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  updateUserProgress(input: UpdateProgressInput!): CourseProgress!
+  completeModule(input: CompleteModuleInput!): Module!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+}
+
+input UpdateProgressInput {
+  userId: ID!
+  courseId: ID!
+  completedModules: [String!]!
+  overallProgress: Int!
+}
+
+input CompleteModuleInput {
+  userId: ID!
+  moduleId: ID!
+}
