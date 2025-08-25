@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
@@ -48,16 +50,16 @@ const features = [
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      {/* Secondary Navigation */}
-      <Breadcrumb 
-        items={[
-          { label: 'Home', href: '/', active: true },
-          { label: 'Crash Course', href: '/crash-course' }
-        ]} 
-      />
+        {/* Secondary Navigation */}
+        <Breadcrumb 
+          items={[
+            { label: 'Home', href: '/', active: true },
+            { label: 'Crash Course', href: '/crash-course' }
+          ]} 
+        />
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <section className="py-20 text-center">
           <motion.h1 
