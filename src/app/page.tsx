@@ -185,12 +185,17 @@ model = Pipeline(
     ]
 )
 
-X_train, X_valid, y_train, y_valid = train_test_split(
-    X, y, test_size=0.2, stratify=y, random_state=42
+X_train, X_temp, y_train, y_temp = train_test_split(
+    X, y, test_size=0.3, stratify=y, random_state=42
+)
+
+X_valid, X_test, y_valid, y_test = train_test_split(
+    X_temp, y_temp, test_size=0.5, stratify=y_temp, random_state=42
 )
 
 model.fit(X_train, y_train)
-print("Validation precision:", model.score(X_valid, y_valid))`;
+print("Validation precision:", model.score(X_valid, y_valid))
+print("Test precision:", model.score(X_test, y_test))`;
 
 const toolkit = {
   environment: [
